@@ -1,8 +1,9 @@
 package com.yum.springboot.domain.user;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@Gatter
+@Getter
 @RequiredArgsConstructor
 public enum Role {
 

@@ -1,6 +1,7 @@
 package com.yum.springboot.config.auth;
 
 import com.yum.springboot.config.auth.dto.OAuthAttributes;
+import com.yum.springboot.config.auth.dto.SessionUser;
 import com.yum.springboot.domain.user.User;
 import com.yum.springboot.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +30,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 delegate = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
-        String registrationID = userRequest.
+        String registrationId = userRequest.
                 getClientRegistration().getRegistrationId();
+
         String userNameAttributeName = userRequest.
                 getClientRegistration().getProviderDetails()
                 .getUserInfoEndpoint().
@@ -51,7 +53,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     }
 
     private User saveOrUpdate(OAuthAttributes attributes) {
-        User user = userRepository.finalBuEmail(attributes.getEmail())
+        User user = userRepository.findByEmail(attributes.getEmail())
                 .map(entity -> entity.update(attributes.getName(),
                         attributes.getPicture()))
                 .orElse(attributes.toEntity());
